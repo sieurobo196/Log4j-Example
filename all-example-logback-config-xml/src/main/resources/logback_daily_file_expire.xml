@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--config no status-->
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+    <!--config output console-->
+    <property name="DEV_HOME" value="c:/logs" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+    <appender name="File-Daily" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <param name="Threshold" value="INFO"/>
+        <param name="file" value="${DEV_HOME}/app.log"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <param name="fileNamePattern" value="${DEV_HOME}/app.%d{yyyy-MM-dd-HH-mm}.log"/>
+            <param name="ActiveFileName" value="app.log"/>
+            <param name="maxHistory" value="2"/>
+        </rollingPolicy>
+        
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                [%d{dd/MM/yy HH:mm:ss:sss z}] [%t] %-5p %C{6} [%F:%L] - %m%n
+            </Pattern>
+        </encoder>
+    </appender>
+	
+    <!-- Send logs to both console and file audit -->
+    <logger name="com.codewr.logback" level="debug"
+            additivity="false">
+        <appender-ref ref="File-Daily" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+	
+
+</configuration>
